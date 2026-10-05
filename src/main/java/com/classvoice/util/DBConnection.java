@@ -6,11 +6,14 @@ import java.sql.SQLException;
 
 public final class DBConnection {
 
-    private DBConnection() {}
+    private DBConnection() {
+    }
 
     private static final String URL =
-            env("CLASSVOICE_DB_URL",
-                "jdbc:mysql://localhost:3306/classvoice_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+            env(
+                "CLASSVOICE_DB_URL",
+                "jdbc:mysql://localhost:3306/classvoice_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+            );
 
     private static final String USER =
             env("CLASSVOICE_DB_USER", "classvoice");
@@ -19,7 +22,11 @@ public final class DBConnection {
             env("CLASSVOICE_DB_PASSWORD", "ClassVoice@123");
 
     public static Connection getConnection() throws SQLException {
+
         try {
+            // Explicitly load MySQL/TiDB JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
             System.out.println("=== ClassVoice DB DEBUG ===");
             System.out.println("DB URL: " + URL);
             System.out.println("DB USER: " + USER);
@@ -28,20 +35,46 @@ public final class DBConnection {
                     DriverManager.getConnection(URL, USER, PASSWORD);
 
             System.out.println("DB CONNECTION SUCCESS");
+
             return connection;
 
+        } catch (ClassNotFoundException e) {
+
+            System.err.println(
+                    "=== MYSQL JDBC DRIVER NOT FOUND ==="
+            );
+
+            e.printStackTrace();
+
+            throw new SQLException(
+                    "MySQL JDBC driver is not available in the application.",
+                    e
+            );
+
         } catch (SQLException e) {
-            System.err.println("=== ClassVoice DB CONNECTION FAILED ===");
+
+            System.err.println(
+                    "=== CLASSVOICE DB CONNECTION FAILED ==="
+            );
+
             System.err.println("SQL State: " + e.getSQLState());
             System.err.println("Error Code: " + e.getErrorCode());
             System.err.println("Message: " + e.getMessage());
+
             e.printStackTrace();
+
             throw e;
         }
     }
 
     private static String env(String key, String fallback) {
-        String v = System.getenv(key);
-        return v == null || v.isBlank() ? fallback : v;
+
+        String value = System.getenv(key);
+
+        if (value == null || value.isBlank()) {
+            return fallback;
+        }
+
+        return value;
     }
 }
