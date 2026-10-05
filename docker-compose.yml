@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: classvoice-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: classvoice_db
+      MYSQL_USER: classvoice
+      MYSQL_PASSWORD: ClassVoice@123
+      MYSQL_ROOT_PASSWORD: Root@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - classvoice_mysql:/var/lib/mysql
+      - ./database/classvoice_db.sql:/docker-entrypoint-initdb.d/01-classvoice.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uclassvoice", "-pClassVoice@123"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  app:
+    build: .
+    container_name: classvoice-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      CLASSVOICE_DB_URL: jdbc:mysql://db:3306/classvoice_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      CLASSVOICE_DB_USER: classvoice
+      CLASSVOICE_DB_PASSWORD: ClassVoice@123
+    ports:
+      - "8081:8080"
+volumes:
+  classvoice_mysql:
