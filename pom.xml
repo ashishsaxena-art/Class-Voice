@@ -1,4 +1,3 @@
-```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -20,7 +19,6 @@
 
     <dependencies>
 
-        <!-- Jakarta Servlet API - provided by Tomcat -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -28,21 +26,18 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL API -->
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
             <version>3.0.0</version>
         </dependency>
 
-        <!-- JSTL implementation -->
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
         </dependency>
 
-        <!-- MySQL / TiDB JDBC driver -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -52,13 +47,9 @@
     </dependencies>
 
     <build>
-
-        <!-- Render/Tomcat will deploy as /ClassVoice -->
         <finalName>ClassVoice</finalName>
 
         <plugins>
-
-            <!-- Build WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -67,10 +58,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-
         </plugins>
-
     </build>
 
 </project>
-```
