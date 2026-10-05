@@ -1,0 +1,2 @@
+package com.classvoice.controller; import jakarta.servlet.annotation.WebServlet; import jakarta.servlet.http.*; import jakarta.servlet.*; import java.io.IOException;
+@WebServlet("/logout") public class LogoutServlet extends HttpServlet {protected void doGet(HttpServletRequest r,HttpServletResponse p)throws IOException{HttpSession s=r.getSession(false);if(s!=null)s.invalidate();p.sendRedirect(r.getContextPath()+"/index.jsp?logout=1");}}

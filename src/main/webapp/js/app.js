@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{const t=document.querySelector('#feedbackText'),c=document.querySelector('#charCounter');if(t&&c){const update=()=>c.textContent=`${t.value.length}/1000`;t.addEventListener('input',update);update();}});

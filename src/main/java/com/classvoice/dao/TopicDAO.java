@@ -1,0 +1,9 @@
+package com.classvoice.dao;
+import com.classvoice.model.*; import com.classvoice.util.DBConnection; import java.sql.*; import java.util.*;
+public class TopicDAO {
+ public long create(Topic t)throws SQLException{String s="INSERT INTO topics(lecture_id,topic_name,description) VALUES(?,?,?)";try(Connection c=DBConnection.getConnection();PreparedStatement p=c.prepareStatement(s,Statement.RETURN_GENERATED_KEYS)){p.setLong(1,t.getLectureId());p.setString(2,t.getTopicName());p.setString(3,t.getDescription());p.executeUpdate();try(ResultSet r=p.getGeneratedKeys()){if(r.next())return r.getLong(1);}}return -1;}
+ public List<Topic> findByLecture(long lectureId)throws SQLException{String s="SELECT * FROM topics WHERE lecture_id=? ORDER BY topic_id";List<Topic> out=new ArrayList<>();try(Connection c=DBConnection.getConnection();PreparedStatement p=c.prepareStatement(s)){p.setLong(1,lectureId);try(ResultSet r=p.executeQuery()){while(r.next()){Topic t=map(r);t.setKeywords(new KeywordDAO().findByTopic(t.getTopicId()));out.add(t);}}}return out;}
+ public Topic findById(long topicId)throws SQLException{String s="SELECT * FROM topics WHERE topic_id=?";try(Connection c=DBConnection.getConnection();PreparedStatement p=c.prepareStatement(s)){p.setLong(1,topicId);try(ResultSet r=p.executeQuery()){return r.next()?map(r):null;}}}
+ public boolean belongsToLecture(long topicId,long lectureId)throws SQLException{String s="SELECT 1 FROM topics WHERE topic_id=? AND lecture_id=?";try(Connection c=DBConnection.getConnection();PreparedStatement p=c.prepareStatement(s)){p.setLong(1,topicId);p.setLong(2,lectureId);try(ResultSet r=p.executeQuery()){return r.next();}}}
+ private Topic map(ResultSet r)throws SQLException{Topic t=new Topic();t.setTopicId(r.getLong("topic_id"));t.setLectureId(r.getLong("lecture_id"));t.setTopicName(r.getString("topic_name"));t.setDescription(r.getString("description"));return t;}
+}
