@@ -3,78 +3,38 @@ package com.classvoice.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/** Uses MySQL Connector/J for both local MySQL and free TiDB Cloud Starter. */
 public final class DBConnection {
+    private static final Logger LOG = Logger.getLogger(DBConnection.class.getName());
+    private static final String DEFAULT_LOCAL_URL =
+            "jdbc:mysql://localhost:3306/classvoice_db?sslMode=DISABLED&serverTimezone=UTC&connectTimeout=10000";
 
-    private DBConnection() {
-    }
-
-    private static final String URL =
-            env(
-                "CLASSVOICE_DB_URL",
-                "jdbc:mysql://localhost:3306/classvoice_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-            );
-
-    private static final String USER =
-            env("CLASSVOICE_DB_USER", "classvoice");
-
-    private static final String PASSWORD =
-            env("CLASSVOICE_DB_PASSWORD", "ClassVoice@123");
+    private DBConnection() { }
 
     public static Connection getConnection() throws SQLException {
-
+        String url = env("CLASSVOICE_DB_URL", DEFAULT_LOCAL_URL);
+        String username = env("CLASSVOICE_DB_USER", "classvoice");
+        String password = env("CLASSVOICE_DB_PASSWORD", "ClassVoice@123"); // local Docker dev only
         try {
-            // Explicitly load MySQL/TiDB JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            System.out.println("=== ClassVoice DB DEBUG ===");
-            System.out.println("DB URL: " + URL);
-            System.out.println("DB USER: " + USER);
-
-            Connection connection =
-                    DriverManager.getConnection(URL, USER, PASSWORD);
-
-            System.out.println("DB CONNECTION SUCCESS");
-
-            return connection;
-
         } catch (ClassNotFoundException e) {
-
-            System.err.println(
-                    "=== MYSQL JDBC DRIVER NOT FOUND ==="
-            );
-
-            e.printStackTrace();
-
-            throw new SQLException(
-                    "MySQL JDBC driver is not available in the application.",
-                    e
-            );
-
-        } catch (SQLException e) {
-
-            System.err.println(
-                    "=== CLASSVOICE DB CONNECTION FAILED ==="
-            );
-
-            System.err.println("SQL State: " + e.getSQLState());
-            System.err.println("Error Code: " + e.getErrorCode());
-            System.err.println("Message: " + e.getMessage());
-
-            e.printStackTrace();
-
-            throw e;
+            throw new SQLException("MySQL JDBC driver is missing from the deployed WAR", e);
+        }
+        try {
+            return DriverManager.getConnection(url, username, password);
+        } catch (SQLException ex) {
+            // Never log the URL or password: URLs can include credentials/query secrets.
+            LOG.log(Level.SEVERE, "SQL connection failed: SQLState=" + ex.getSQLState()
+                    + ", errorCode=" + ex.getErrorCode());
+            throw ex;
         }
     }
 
     private static String env(String key, String fallback) {
-
         String value = System.getenv(key);
-
-        if (value == null || value.isBlank()) {
-            return fallback;
-        }
-
-        return value;
+        return value == null || value.isBlank() ? fallback : value;
     }
 }
