@@ -39,6 +39,59 @@ document.addEventListener('DOMContentLoaded', () => {
     revealItems.forEach(el => observer.observe(el));
   }
 
+  // One slide at a time: an accessible, manual story carousel (no autoplay).
+  document.querySelectorAll('[data-cv-slider]').forEach(slider => {
+    const track = slider.querySelector('[data-cv-track]');
+    const slides = [...slider.querySelectorAll('[data-cv-slide]')];
+    const dots = [...slider.querySelectorAll('[data-cv-to]')];
+    const previous = slider.querySelector('[data-cv-prev]');
+    const next = slider.querySelector('[data-cv-next]');
+    const stepLabel = slider.querySelector('[data-cv-step]');
+    if (!track || slides.length < 2 || dots.length !== slides.length || !previous || !next) return;
+
+    let active = 0;
+    const show = index => {
+      active = Math.max(0, Math.min(slides.length - 1, index));
+      track.style.transform = `translate3d(-${active * 100}%, 0, 0)`;
+      slides.forEach((slide, i) => {
+        slide.setAttribute('aria-hidden', String(i !== active));
+      });
+      dots.forEach((dot, i) => {
+        if (i === active) dot.setAttribute('aria-current', 'step');
+        else dot.removeAttribute('aria-current');
+      });
+      previous.disabled = active === 0;
+      next.disabled = active === slides.length - 1;
+      if (stepLabel) stepLabel.textContent = String(active + 1).padStart(2, '0');
+    };
+
+    // Initialize before exposing interactive controls, keeping JS-off content readable.
+    show(0);
+    slider.classList.add('is-ready');
+    previous.addEventListener('click', () => show(active - 1));
+    next.addEventListener('click', () => show(active + 1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+    slider.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      // Avoid overriding arrow navigation on future text fields.
+      if (event.target.closest('input, textarea, select')) return;
+      event.preventDefault();
+      show(active + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+
+    // Basic swipe navigation on touch devices, without forced page scrolling.
+    let startX = null;
+    slider.addEventListener('touchstart', event => {
+      if (event.touches.length === 1) startX = event.touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', event => {
+      if (startX === null || !event.changedTouches.length) return;
+      const dx = event.changedTouches[0].clientX - startX;
+      startX = null;
+      if (Math.abs(dx) >= 65) show(active + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  });
+
   // Dashboard counters are progressive enhancement, never dependent on JS.
   const counters = [...document.querySelectorAll('[data-count]')];
   const startCount = node => {
