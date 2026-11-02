@@ -27,6 +27,6 @@
       <button type="submit" class="btn btn-primary w-100 py-3">Sign in <i class="bi bi-arrow-right ms-2"></i></button>
     </form>
     <p class="text-center text-secondary small mt-4 mb-3">New to ClassVoice? <a class="fw-bold text-decoration-none" href="${pageContext.request.contextPath}/register.jsp">Create an account</a></p>
-    <div class="cv-auth-note"><i class="bi bi-lightbulb me-2 cv-accent"></i>Trying the demo? Sample login details are in <strong>docs/DEMO_ACCOUNTS.md</strong> of your project.</div>
+    <div class="cv-auth-note"><i class="bi bi-shield-check me-2 cv-accent"></i>Sign in with an account registered in ClassVoice. If you are the site owner, first connect and initialize the SQL database.</div>
   </div></div></div>
 </div></div></main><%@ include file="/WEB-INF/includes/footer.jsp" %></body></html>

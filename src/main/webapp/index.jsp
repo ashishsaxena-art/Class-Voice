@@ -24,15 +24,20 @@
         <div class="col-lg-6 cv-entrance cv-entrance-right cv-entrance-3">
           <div class="cv-preview-stage">
             <div class="cv-preview-glow" aria-hidden="true"></div>
-            <div class="cv-preview-card" aria-label="Example lecture dashboard">
-              <div class="cv-preview-head d-flex align-items-center justify-content-between gap-2"><div class="d-flex align-items-center gap-2"><span class="cv-icon-soft violet"><i class="bi bi-soundwave"></i></span><div><div class="fw-bold">Lecture insights</div><div class="cv-subtext">Database Management System</div></div></div><span class="cv-live-pill"><span class="cv-pulse-dot"></span> Live</span></div>
-              <div class="cv-preview-body"><div class="cv-preview-subtitle">Today's learning pulse</div><div class="row g-3 my-1"><div class="col-6"><div class="cv-preview-stat"><div class="cv-stat-icon violet"><i class="bi bi-chat-left-text"></i></div><strong>24</strong><span>Responses</span></div></div><div class="col-6"><div class="cv-preview-stat"><div class="cv-stat-icon mint"><i class="bi bi-bookmark-check"></i></div><strong>4</strong><span>Topics tracked</span></div></div></div>
-                <div class="d-flex justify-content-between align-items-center mt-4 mb-3"><h2 class="h6 fw-bold mb-0">Topics needing clarity</h2><span class="cv-subtext">Illustrative example</span></div>
-                <div class="cv-bar-row"><div><span>Normalization</span><strong>72%</strong></div><div class="cv-bar-track"><span style="--bar-width:72%;--bar-color:#6659eb"></span></div></div>
-                <div class="cv-bar-row"><div><span>SQL Joins</span><strong>48%</strong></div><div class="cv-bar-track"><span style="--bar-width:48%;--bar-color:#19bca8"></span></div></div>
-                <div class="cv-bar-row"><div><span>Transactions</span><strong>26%</strong></div><div class="cv-bar-track"><span style="--bar-width:26%;--bar-color:#f0b56e"></span></div></div>
+            <div class="cv-preview-card cv-workflow-board" aria-label="ClassVoice platform workflow">
+              <div class="cv-preview-head d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2"><span class="cv-icon-soft violet"><i class="bi bi-soundwave"></i></span><div><strong>ClassVoice / Workspace</strong><div class="cv-subtext">From feedback to understanding</div></div></div>
+                <span class="cv-board-badge"><i class="bi bi-lightning-charge"></i> How it works</span>
               </div>
-              <div class="cv-preview-foot"><span class="cv-foot-avatar"><i class="bi bi-chat-heart"></i></span><div><strong>“I need another example of 2NF and 3NF.”</strong><small>Feedback mapped to: Normalization</small></div><i class="bi bi-check-circle-fill ms-auto cv-accent"></i></div>
+              <div class="cv-preview-body cv-board-body">
+                <div class="cv-board-caption">THE FEEDBACK FLOW <i class="bi bi-stars ms-1"></i></div>
+                <div class="cv-board-node cv-board-node-first"><span class="cv-board-node-icon"><i class="bi bi-journal-richtext"></i></span><span><strong>Start a lecture</strong><small>Set the focus and topics</small></span><i class="bi bi-check2-circle cv-board-check ms-auto"></i></div>
+                <div class="cv-board-connector"><span></span><i class="bi bi-arrow-down"></i></div>
+                <div class="cv-board-node cv-board-node-middle"><span class="cv-board-node-icon"><i class="bi bi-chat-quote"></i></span><span><strong>Students share feedback</strong><small>Quiet voices, meaningful questions</small></span><span class="cv-board-mini-wave"><i></i><i></i><i></i><i></i><i></i></span></div>
+                <div class="cv-board-connector"><span></span><i class="bi bi-arrow-down"></i></div>
+                <div class="cv-board-node cv-board-node-final"><span class="cv-board-node-icon"><i class="bi bi-graph-up-arrow"></i></span><span><strong>See where to focus</strong><small>Real insights when data arrives</small></span><i class="bi bi-arrow-up-right cv-accent ms-auto"></i></div>
+              </div>
+              <div class="cv-preview-foot cv-board-foot"><i class="bi bi-lock-fill cv-green"></i><span>Secure sessions · Clear feedback · Better classes</span><span class="ms-auto cv-board-spark" aria-hidden="true">✦</span></div>
             </div>
           </div>
         </div>
@@ -61,8 +66,8 @@
                 <div class="col-lg-7">
                   <div class="cv-flow-visual cv-flow-visual-violet" aria-hidden="true">
                     <div class="cv-flow-window">
-                      <div class="cv-flow-window-top"><span class="cv-flow-window-icon"><i class="bi bi-journal-bookmark-fill"></i></span><span>Lecture workspace</span><span class="cv-live-pill ms-auto"><span class="cv-pulse-dot"></span> Active</span></div>
-                      <div class="cv-flow-window-body"><div class="cv-flow-window-label">CURRENT SESSION</div><div class="cv-flow-window-title">Database Management System</div><div class="cv-flow-subline"><i class="bi bi-calendar3 me-1"></i> Today's lecture <span class="mx-1">·</span> 4 topics</div><div class="cv-flow-taglist"><span>Normalization</span><span>SQL Joins</span><span>Transactions</span><span>+1</span></div><div class="cv-flow-window-action"><i class="bi bi-check-circle-fill me-2"></i>Ready for student feedback</div></div>
+                      <div class="cv-flow-window-top"><span class="cv-flow-window-icon"><i class="bi bi-journal-bookmark-fill"></i></span><span>Lecture workspace</span><span class="cv-live-pill ms-auto"><i class="bi bi-play-circle"></i> Workflow</span></div>
+                      <div class="cv-flow-window-body"><div class="cv-flow-window-label">LECTURE CREATION</div><div class="cv-flow-window-title">New classroom session</div><div class="cv-flow-subline"><i class="bi bi-calendar3 me-1"></i> Add meaningful topics</div><div class="cv-flow-taglist"><span>Concepts</span><span>Questions</span><span>Practice</span></div><div class="cv-flow-window-action"><i class="bi bi-check-circle-fill me-2"></i>Ready for student feedback</div></div>
                     </div>
                   </div>
                 </div>
@@ -80,7 +85,7 @@
                   <div class="cv-flow-visual cv-flow-visual-mint" aria-hidden="true">
                     <div class="cv-flow-window">
                       <div class="cv-flow-window-top"><span class="cv-flow-window-icon"><i class="bi bi-chat-left-text-fill"></i></span><span>Share feedback</span><i class="bi bi-shield-check ms-auto cv-green"></i></div>
-                      <div class="cv-flow-window-body"><div class="cv-flow-window-label">WHAT WAS UNCLEAR?</div><div class="cv-flow-feedback">“I'd love another example to understand the difference between 2NF and 3NF.”<span class="cv-flow-caret"></span></div><div class="cv-flow-window-action"><i class="bi bi-shield-lock me-2"></i>Private in teacher analysis</div></div>
+                      <div class="cv-flow-window-body"><div class="cv-flow-window-label">WHAT WAS UNCLEAR?</div><div class="cv-flow-feedback">“Could you explain that second part with another example?”<span class="cv-flow-caret"></span></div><div class="cv-flow-window-action"><i class="bi bi-shield-lock me-2"></i>Private in teacher analysis</div></div>
                     </div>
                   </div>
                 </div>
@@ -97,8 +102,8 @@
                 <div class="col-lg-7">
                   <div class="cv-flow-visual cv-flow-visual-blue" aria-hidden="true">
                     <div class="cv-flow-window">
-                      <div class="cv-flow-window-top"><span class="cv-flow-window-icon"><i class="bi bi-bar-chart-line-fill"></i></span><span>Topic insights</span><span class="cv-flow-window-label ms-auto">EXAMPLE</span></div>
-                      <div class="cv-flow-window-body"><div class="cv-flow-window-title mb-3">Where students need support</div><div class="cv-bar-row"><div><span>Normalization</span><strong>72%</strong></div><div class="cv-bar-track"><span style="--bar-width:72%;--bar-color:#6659eb"></span></div></div><div class="cv-bar-row"><div><span>SQL Joins</span><strong>48%</strong></div><div class="cv-bar-track"><span style="--bar-width:48%;--bar-color:#19bca8"></span></div></div><div class="cv-bar-row mb-0"><div><span>Transactions</span><strong>26%</strong></div><div class="cv-bar-track"><span style="--bar-width:26%;--bar-color:#f0b56e"></span></div></div></div>
+                      <div class="cv-flow-window-top"><span class="cv-flow-window-icon"><i class="bi bi-bar-chart-line-fill"></i></span><span>Topic insights</span><span class="cv-flow-window-label ms-auto">INSIGHTS</span></div>
+                      <div class="cv-flow-window-body"><div class="cv-flow-window-title mb-3">Where students need support</div><div class="cv-bar-row"><div><span>Core concepts</span><strong><i class="bi bi-arrow-up-right" aria-hidden="true"></i></strong></div><div class="cv-bar-track"><span style="--bar-width:76%;--bar-color:#6659eb"></span></div></div><div class="cv-bar-row"><div><span>Practice</span><strong><i class="bi bi-arrow-up-right" aria-hidden="true"></i></strong></div><div class="cv-bar-track"><span style="--bar-width:51%;--bar-color:#19bca8"></span></div></div><div class="cv-bar-row mb-0"><div><span>Follow-up questions</span><strong><i class="bi bi-arrow-up-right" aria-hidden="true"></i></strong></div><div class="cv-bar-track"><span style="--bar-width:29%;--bar-color:#f0b56e"></span></div></div></div>
                     </div>
                   </div>
                 </div>
