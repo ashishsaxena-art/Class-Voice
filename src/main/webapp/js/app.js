@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     update();
   }
 
+  // Quick reactions are real feedback prompts: they append editable text to the form.
+  if (feedback) document.querySelectorAll('[data-reaction-text]').forEach(button => {
+    button.addEventListener('click', () => {
+      const text = button.dataset.reactionText || '';
+      if (feedback.value.length + text.length > Number(feedback.maxLength)) return;
+      const join = feedback.value && !feedback.value.endsWith(' ') ? ' ' : '';
+      feedback.value += join + text;
+      feedback.dispatchEvent(new Event('input', { bubbles: true }));
+      feedback.focus();
+      button.classList.remove('cv-reaction-selected');
+      void button.offsetWidth;
+      button.classList.add('cv-reaction-selected');
+    });
+  });
+
   // Accessible, optional password visibility toggles.
   document.querySelectorAll('[data-password-toggle]').forEach(button => {
     const target = document.getElementById(button.dataset.passwordToggle);
@@ -35,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
           watched.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px 35px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
     revealItems.forEach(el => observer.observe(el));
   }
 
@@ -118,4 +133,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.5 });
     counters.forEach(el => observer.observe(el));
   }
+  // The authenticated workspace receives only real database values.
+  // Refresh periodically while the tab is visible; no invented counts or presence.
+  document.querySelectorAll('[data-live-dashboard]').forEach(dashboard => {
+    const endpoint = dashboard.dataset.endpoint;
+    const indicator = dashboard.querySelector('[data-live-state]');
+    const refresh = dashboard.querySelector('[data-live-refresh]');
+    if (!endpoint || !indicator || !refresh) return;
+    let busy = false, prior = {}, first = true;
+    const update = async () => {
+      if (busy || document.hidden) return;
+      busy = true;
+      dashboard.classList.remove('cv-sync-error');
+      refresh.disabled = true;
+      refresh.querySelector('i')?.classList.add('cv-spin-once');
+      try {
+        const response = await fetch(endpoint, { credentials: 'same-origin', cache: 'no-store', headers: { Accept: 'application/json' } });
+        if (response.status === 401) throw new Error('Session expired. Sign in again.');
+        if (!response.ok) throw new Error('Connection unavailable');
+        const values = await response.json();
+        Object.keys(values).forEach(key => {
+          const amount = values[key];
+          if (!Number.isInteger(amount) || amount < 0) return;
+          dashboard.closest('main')?.querySelectorAll(`[data-live-value="${key}"]`).forEach(el => {
+            if (el.textContent.trim() !== String(amount)) {
+              el.textContent = amount.toLocaleString();
+              el.classList.remove('cv-data-flash');
+              void el.offsetWidth;
+              el.classList.add('cv-data-flash');
+            }
+          });
+          prior[key] = amount;
+        });
+        const stamp = new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date());
+        indicator.innerHTML = '<i class="bi bi-check-circle-fill" aria-hidden="true"></i> Synced with database · ' + stamp;
+        dashboard.classList.add('cv-sync-ok');
+        first = false;
+      } catch(error) {
+        dashboard.classList.add('cv-sync-error');
+        indicator.textContent = error.message === 'Session expired. Sign in again.' ? error.message : 'Unable to refresh data. Try Sync now.';
+      } finally {
+        busy = false;
+        refresh.disabled = false;
+        refresh.querySelector('i')?.classList.remove('cv-spin-once');
+      }
+    };
+    refresh.addEventListener('click', update);
+    update();
+    const interval = window.setInterval(update, 30000);
+    window.addEventListener('pagehide', () => clearInterval(interval), { once: true });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) update(); });
+  });
+
+  // Button press ripple is visual-only, respects reduced-motion and touch.
+  if (!reduced) document.querySelectorAll('.btn-primary, .cv-flow-arrows button, .cv-sync-button').forEach(button => {
+    button.addEventListener('pointerdown', event => {
+      const bounds = button.getBoundingClientRect();
+      const dot = document.createElement('span');
+      dot.className = 'cv-ripple';
+      dot.style.left = `${event.clientX - bounds.left}px`;
+      dot.style.top = `${event.clientY - bounds.top}px`;
+      button.append(dot);
+      dot.addEventListener('animationend', () => dot.remove(), { once:true });
+    });
+  });
+
 });
