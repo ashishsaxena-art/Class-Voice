@@ -184,4 +184,4 @@ GitHub Actions is included at `.github/workflows/build.yml` and builds the WAR o
 
 ## Limitations
 
-Keyword matching can miss feedback expressed with unrelated wording. The application reports information; it does not automatically decide that a teacher must reteach a topic. It is a mini-project prototype, not a complete LMS.
+Keyword matching can miss feedback expressed with unrelated wording.The application reports information; it does not automatically decide that a teacher must reteach a topic. It is a mini-project prototype, not a complete LMS.
