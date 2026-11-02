@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg cv-navbar sticky-top" aria-label="Main navigation">
+<nav class="navbar navbar-dark navbar-expand-lg cv-navbar sticky-top" aria-label="Main navigation">
   <div class="container cv-nav-inner">
     <a class="navbar-brand cv-brand d-inline-flex align-items-center gap-2" href="${pageContext.request.contextPath}/index.jsp">
       <span class="cv-brand-icon" aria-hidden="true"><i class="bi bi-soundwave"></i></span>
