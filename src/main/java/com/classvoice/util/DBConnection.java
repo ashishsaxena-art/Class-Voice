@@ -15,9 +15,13 @@ public final class DBConnection {
     private DBConnection() { }
 
     public static Connection getConnection() throws SQLException {
+        boolean onRender = "true".equalsIgnoreCase(System.getenv("RENDER"));
+        if (onRender && (missing("CLASSVOICE_DB_URL") || missing("CLASSVOICE_DB_USER") || missing("CLASSVOICE_DB_PASSWORD"))) {
+            throw new SQLException("ClassVoice database environment variables are missing on Render", "08001");
+        }
         String url = env("CLASSVOICE_DB_URL", DEFAULT_LOCAL_URL);
         String username = env("CLASSVOICE_DB_USER", "classvoice");
-        String password = env("CLASSVOICE_DB_PASSWORD", "ClassVoice@123"); // local Docker dev only
+        String password = env("CLASSVOICE_DB_PASSWORD", "ClassVoice@123"); // local development only
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -31,6 +35,11 @@ public final class DBConnection {
                     + ", errorCode=" + ex.getErrorCode());
             throw ex;
         }
+    }
+
+    private static boolean missing(String key) {
+        String value = System.getenv(key);
+        return value == null || value.isBlank();
     }
 
     private static String env(String key, String fallback) {
