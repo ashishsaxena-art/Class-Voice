@@ -8,6 +8,14 @@
 <div class="cv-question-card mb-4"><span class="cv-overline">A QUESTION WORTH ASKING</span><h2 class="mt-2 mb-2">What did you not understand in today's lecture?</h2><p class="text-secondary small mb-0">Share what felt confusing. We'll connect it with a topic so your teacher can see what needs attention.</p></div>
 <c:if test="${not empty error}"><div class="alert alert-danger" role="alert"><c:out value="${error}"/></div></c:if>
 <form method="post" action="${pageContext.request.contextPath}/student/feedback"><input type="hidden" name="lectureId" value="${lecture.lectureId}">
+<div class="cv-reaction-area mb-4" aria-label="Quick feedback prompts">
+ <div class="cv-reaction-label"><i class="bi bi-emoji-smile me-2"></i>Express how the lecture felt <span class="cv-reaction-helper">(adds text you can edit)</span></div>
+ <div class="cv-reaction-list">
+   <button type="button" class="cv-reaction-choice" data-reaction-text="I need more clarity on this topic. "><span aria-hidden="true">🤔</span> Need clarity</button>
+   <button type="button" class="cv-reaction-choice" data-reaction-text="Could we go through another example? "><span aria-hidden="true">💡</span> More examples</button>
+   <button type="button" class="cv-reaction-choice" data-reaction-text="I understood the lecture well. "><span aria-hidden="true">🙌</span> Understood</button>
+ </div>
+</div>
 <label for="feedbackText" class="form-label">Your feedback</label><textarea id="feedbackText" class="form-control" name="feedbackText" maxlength="1000" rows="6" placeholder="For example: Could we go through another example of 2NF and 3NF?" required><c:out value="${feedbackTextValue}"/></textarea>
 <div class="d-flex justify-content-between small text-secondary mt-2"><span id="charCounter" aria-live="polite">0/1000</span><span>Keep it clear and specific.</span></div>
 <div class="cv-anonymity my-4"><i class="bi bi-shield-check"></i> Your teacher sees the feedback text and topic, not your name alongside it.</div>
